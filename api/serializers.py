@@ -38,7 +38,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
     total_price = serializers.SerializerMethodField()
-    user = serializers.HyperlinkedRelatedField(view_name='api:user-detail', read_only=True)
+    user = serializers.HyperlinkedRelatedField(view_name='api:user-detail', read_only=True, lookup_field='id', lookup_url_kwarg='user_id')
 
     def get_total_price(self, obj: Order):
         return sum(order_item.item_subtotal for order_item in obj.items.all())
