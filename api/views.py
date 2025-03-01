@@ -37,14 +37,14 @@ def product_detail(request, pk):
 
 @api_view(http_method_names=['GET'])
 def order_list(request):
-    orders = Order.objects.all()
+    orders = Order.objects.prefetch_related('items__product')
     serializer = OrderSerializer(orders, many=True, context={'request': request})
     return Response(serializer.data)
 
 
 @api_view(http_method_names=['GET'])
 def order_detail(request, order_id):
-    order = get_object_or_404(Order, order_id=order_id)
+    order = get_object_or_404(Order.objects.prefetch_related('items__product'), order_id=order_id)
     serializer = OrderSerializer(order, context={'request': request})
     return Response(serializer.data)
 
