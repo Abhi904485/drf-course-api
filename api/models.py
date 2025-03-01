@@ -3,6 +3,8 @@ import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from api.manager import OrderManager
+
 
 class User(AbstractUser):
     pass
@@ -42,6 +44,8 @@ class Order(models.Model):
     status = models.CharField(max_length=10, choices=StatusChoices, default=StatusChoices.PENDING)
     product = models.ManyToManyField(Product, through="OrderItem", through_fields=("order", "product"),
                                      related_name="orders", related_query_name="order")
+
+    objects = OrderManager()
 
     class Meta:
         db_table = 'order'
