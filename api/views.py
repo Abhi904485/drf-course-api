@@ -1,5 +1,6 @@
 from django.db.models import Max
 from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from api.models import Product, Order, User
@@ -31,6 +32,10 @@ class ProductRetrieveAPIView(RetrieveAPIView):
 class OrderListAPIView(ListAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user)
 
 
 class OrderRetrieveAPIView(RetrieveAPIView):
