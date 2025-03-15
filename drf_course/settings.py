@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'silk',
     'rest_framework_simplejwt',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -126,6 +127,13 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication', # Django session auth
         'rest_framework.authentication.BasicAuthentication', # Basic auth
         'api.custom_cookie_based_authentication.CustomCookieAuthentication',  # Custom authentication
-    ]
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'DRF Course API',
+    'DESCRIPTION': 'DRF Course description',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}

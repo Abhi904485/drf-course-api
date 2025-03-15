@@ -1,5 +1,5 @@
 from django.db.models import Max
-from rest_framework.generics import ListAPIView, RetrieveAPIView, ListCreateAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.response import Response
 
@@ -29,10 +29,17 @@ class ProductListCreateApiView(ListCreateAPIView):
         return super().get_permissions()
 
 
-class ProductRetrieveAPIView(RetrieveAPIView):
+class ProductRetrieveAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_url_kwarg = 'product_id'
+
+    def get_permissions(self):
+        self.permission_classes = [AllowAny]
+        if self.request.method in ['PUT', 'PATCH', 'DELETE']:
+            self.permission_classes = [IsAdminUser]
+        return super().get_permissions()
+
 
 
 class OrderListAPIView(ListAPIView):
