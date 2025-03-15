@@ -1,0 +1,82 @@
+###
+
+# @name products
+GET {{url}}/products/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQwOTM5NDMxLCJpYXQiOjE3NDA5MzkxMzEsImp0aSI6IjdiOTE2ZjA2MzdmODQwMGFhOTIxNmNlZjMyZTU2NzJmIiwidXNlcl9pZCI6MX0.TmPLGnp4CWCVxURC0eVU7voFGyYGgNTtnT7OOhOjA98
+###
+
+# @name first product
+@product_id=1
+GET {{url}}/products/{{product_id}}
+
+###
+
+# @name Create Product via Custom Cookie Based Authentication
+POST {{url}}/products/
+Content-Type: application/json
+Cookie: my_custom_key=my_custom_value1
+
+
+{
+  "name": "product1",
+  "price": 234.00,
+  "stock": 3,
+  "description": "this is product1 Description"
+}
+
+###
+
+# @name Create Product via Cookie(Session) Based Authentication
+POST {{url}}/products/
+Content-Type: application/json
+X-CSRFToken: s8TXwNfh2XjaSzsFq4qm1q6A2RjB1Fmf
+Cookie: sessionid=zkgqiz9xr6ydkosi42laafq0r62prc8l;csrftoken=s8TXwNfh2XjaSzsFq4qm1q6A2RjB1Fmf
+
+
+{
+  "name": "product1",
+  "price": 234.00,
+  "stock": 3,
+  "description": "this is product1 Description"
+}
+
+###
+
+# @name Create Product via Basic Authentication
+POST {{url}}/products/
+Content-Type: application/json
+Authorization: Basic YWRtaW46dGVzdA==
+
+
+{
+  "name": "product1",
+  "price": 234.00,
+  "stock": 3,
+  "description": "this is product1 Description"
+}
+
+###
+
+# @name Create Product via JWT Authntication
+POST {{url}}/products/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQyMDQ2MzY3LCJpYXQiOjE3NDIwNDYwNjcsImp0aSI6ImRiYWQyNzkzODBjYTQyZmFiYjIxYThlZjY0NzMwMzMzIiwidXNlcl9pZCI6MX0.G7CriFwyHpvaWAhudrj1Hjq663ekVGgigXBN6l5J-fg
+
+
+{
+  "name": "product1",
+  "price": 234.00,
+  "stock": 3,
+  "description": "this is product1 Description"
+}
+
+###
+# @name Api Token
+POST {{url}}/api/token/
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "test"
+}

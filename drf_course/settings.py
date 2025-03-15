@@ -122,8 +122,10 @@ LOGIN_REDIRECT_URL = 'api:product-list'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        'api.custom_cookie_based_authentication.CustomCookieAuthentication', # Custom authentication
+        'rest_framework_simplejwt.authentication.JWTAuthentication', # JWT authentication
+        'rest_framework.authentication.SessionAuthentication', # Django session auth
+        'rest_framework.authentication.BasicAuthentication', # Basic auth
     ]
 }
 
