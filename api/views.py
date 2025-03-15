@@ -1,6 +1,6 @@
 from django.db.models import Max
 from rest_framework.generics import ListAPIView, RetrieveAPIView, ListCreateAPIView
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.response import Response
 
 from api.models import Product, Order, User
@@ -23,7 +23,7 @@ class ProductListCreateApiView(ListCreateAPIView):
     serializer_class = ProductSerializer
 
     def get_permissions(self):
-        self.permission_classes = [IsAuthenticated]
+        self.permission_classes = [AllowAny]
         if self.request.method == 'POST':
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()

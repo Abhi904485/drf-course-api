@@ -28,7 +28,8 @@ INSTALLED_APPS = [
     'django_extensions',
     'api',
     'rest_framework',
-    'silk'
+    'silk',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -118,3 +119,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'api.User'
 
 LOGIN_REDIRECT_URL = 'api:product-list'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
+
