@@ -1,9 +1,9 @@
 from django.db.models import Max
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.generics import ListAPIView, RetrieveAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.response import Response
 
+from api.filter import ProductFilterSet
 from api.models import Product, Order, User
 from api.serializers import (ProductSerializer, OrderSerializer, UserSerializer, ProductInfoSerializer)
 
@@ -22,8 +22,7 @@ class UserRetrieveAPIView(RetrieveAPIView):
 class ProductListCreateApiView(ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    filter_backends = [DjangoFilterBackend,]
-    filterset_fields = ['name','price', 'stock']
+    filterset_class = ProductFilterSet
 
 
     def get_permissions(self):
