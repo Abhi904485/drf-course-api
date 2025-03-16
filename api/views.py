@@ -5,7 +5,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, ListCreateAPIV
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.response import Response
 
-from api.filter import ProductFilterSet
+from api.filter import ProductFilterSet, InStockProductFilterBackend
 from api.models import Product, Order, User
 from api.serializers import (ProductSerializer, OrderSerializer, UserSerializer, ProductInfoSerializer)
 
@@ -25,7 +25,7 @@ class ProductListCreateApiView(ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filterset_class = ProductFilterSet
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter, InStockProductFilterBackend]
     search_fields = ['name', 'price', 'stock']
     ordering_fields = ['name', 'price', 'stock']
 
