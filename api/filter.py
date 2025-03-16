@@ -6,4 +6,8 @@ from api.models import Product
 class ProductFilterSet(FilterSet):
     class Meta:
         model = Product
-        fields = ('name', 'price', 'stock')
+        fields = {
+            "name": ["exact", "icontains", "istartswith"],
+            "price": ["exact", "range", "lt", "gt"],
+            "stock": ["exact", "range", "lt", "gt"],
+        }
