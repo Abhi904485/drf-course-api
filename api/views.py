@@ -6,9 +6,10 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, ListCreateAPIV
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.response import Response
 
-from api.filter import ProductFilterSet, InStockProductFilterBackend
+from api.filter import ProductFilterSet, InStockProductFilterBackend, OrderFilterSet
 from api.models import Product, Order, User
-from api.serializers import (ProductSerializer, OrderSerializer, UserSerializer, ProductInfoSerializer)
+from api.serializers import (ProductSerializer, OrderSerializer, UserSerializer, ProductInfoSerializer,
+                             OrderCreateSerializer)
 
 
 class UserListAPIView(ListAPIView):
@@ -56,11 +57,28 @@ class OrderViewSet(viewsets.ModelViewSet):
     lookup_url_kwarg = 'order_id'
     permission_classes = (IsAuthenticated,)
     pagination_class = None
+    filterset_class = OrderFilterSet
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    ordering_fields = ['status', 'created_at']
+    search_fields = ['status', 'created_at']
 
     def get_queryset(self):
-        if self.action == 'list':
+        if not self.request.user.is_staff:
             return super().get_queryset().filter(user=self.request.user)
         return super().get_queryset()
+
+    def get_serializer_class(self):
+        if self.action in ["create", "update", "partial_update"]:
+            return OrderCreateSerializer
+        return super().get_serializer_class()
+
+    def perform_create(self, serializer):
+        # Saving extra info user not passing from request body
+        serializer.save(user=self.request.user)
+
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
+
 
 
 
