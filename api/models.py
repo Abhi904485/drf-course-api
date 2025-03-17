@@ -21,6 +21,7 @@ class Product(models.Model):
         db_table = 'product'
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
+        ordering = ['pk']
 
     @property
     def in_stock(self):
