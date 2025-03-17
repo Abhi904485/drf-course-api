@@ -1,5 +1,6 @@
 from django.db.models import Max
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import ListAPIView, RetrieveAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
@@ -49,20 +50,18 @@ class ProductRetrieveAPIView(RetrieveUpdateDestroyAPIView):
         return super().get_permissions()
 
 
-
-class OrderListAPIView(ListAPIView):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
-    permission_classes = (IsAuthenticated,)
-
-    def get_queryset(self):
-        return super().get_queryset().filter(user=self.request.user)
-
-
-class OrderRetrieveAPIView(RetrieveAPIView):
+class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     lookup_url_kwarg = 'order_id'
+    permission_classes = (IsAuthenticated,)
+    pagination_class = None
+
+    def get_queryset(self):
+        if self.action == 'list':
+            return super().get_queryset().filter(user=self.request.user)
+        return super().get_queryset()
+
 
 
 class ProductInfoListAPIView(ListAPIView):
