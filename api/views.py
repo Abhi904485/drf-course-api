@@ -2,7 +2,6 @@ from django.db.models import Max
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import ListAPIView, RetrieveAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.response import Response
 
@@ -29,11 +28,6 @@ class ProductListCreateApiView(ListCreateAPIView):
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter, InStockProductFilterBackend]
     search_fields = ['name', 'price', 'stock']
     ordering_fields = ['name', 'price', 'stock']
-    pagination_class = PageNumberPagination
-    pagination_class.max_page_size  = 10
-    pagination_class.page_query_param = 'page_num'
-    pagination_class.page_size_query_param = 'size'
-    pagination_class.page_size = 1
 
 
     def get_permissions(self):
